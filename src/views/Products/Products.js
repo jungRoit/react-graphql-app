@@ -14,7 +14,7 @@ class Products extends React.Component {
     this.state = {
       products: [],
       sortOrder: 'asc',
-      sortBy: '',
+      sortBy: 'name',
       loading: false,
     };
   }
@@ -24,21 +24,15 @@ class Products extends React.Component {
   }
 
   filter = async (e) => {
-      e.preventDefault();
-      try {
-        this.setState({ loading: true });
-        const data = await this.getProducts();
-        this.setState({ pictures: data.items, loading: false });
-      } catch (error) {
-        this.setState({ loading: false });
-      }
+    e.preventDefault();
+    this.getProducts();
   };
 
   getProducts = async () => {
     try {
       this.setState({loading:true});
       const response = await ApiService.post(API_URL,{query:`{
-        Products {
+        Products(offset:0,sortBy:"${this.state.sortBy}",order:"${this.state.sortOrder}") {
           name
           imageUrl
           price
@@ -56,13 +50,11 @@ class Products extends React.Component {
 
   handleSortOrder = (e) => {
     this.setState({ sortOrder: e.target.value }, () => {
-      this.sortPictures();
     });
   };
 
   handleSortBy = (e) => {
     this.setState({ sortBy: e.target.value }, () => {
-      this.sortPictures();
     });
   };
 
@@ -75,15 +67,13 @@ class Products extends React.Component {
             <h1 className="title">Products</h1>
           </div>
           <div className="header-right">
-          <form className="search-box" onSubmit={this.search}>
+          <form className="search-box" onSubmit={this.filter}>
             <div className="filters-box">
               <Dropdown
                 options={[
                   { label: 'Sort By', value: '' },
-                  { label: 'Title', value: 'title' },
-                  { label: 'Author', value: 'author' },
-                  { label: 'Published Date', value: 'published' },
-                  { label: 'Taken Date', value: 'date_taken' },
+                  { label: 'name', value: 'name' },
+                  { label: 'price', value: 'price' },
                 ]}
                 onChange={this.handleSortBy}
               />
