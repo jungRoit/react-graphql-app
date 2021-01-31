@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../../ components/Button';
 import { backIcon } from '../../config/image';
 import * as ApiService from '../../services/api';
-import { flickrFeed } from '../../config/url';
+import { API_URL } from '../../config/url';
 import { formatResponse } from '../../utils/utils';
 import Loader from 'react-loader-spinner';
 import ListView from '../../ components/LIstView';
@@ -20,18 +20,8 @@ class Products extends React.Component {
   }
 
   async componentDidMount() {
-    this.getProducts();
+    await this.getProducts();
   }
-
-  getProducts = async () => {
-    try {
-      this.setState({ loading: true });
-      const data = await this.getProducts(flickrFeed);
-      this.setState({ products: data.items, loading: false });
-    } catch (error) {
-      this.setState({ loading: false });
-    }
-  };
 
   filter = async (e) => {
       e.preventDefault();
@@ -44,17 +34,22 @@ class Products extends React.Component {
       }
   };
 
-  getProducts = async (url) => {
-    const response = await ApiService.post(url,{query:`{
-      Products {
-        name
-        imageUrl
-        price
-        _id
-      }
-    }`});
-    console.log('REsp', response);
-    return formatResponse(response);
+  getProducts = async () => {
+    try {
+      this.setState({loading:true});
+      const response = await ApiService.post(API_URL,{query:`{
+        Products {
+          name
+          imageUrl
+          price
+          _id
+        }
+      }`});
+      this.setState({products:response.data.Products, loading:false});
+    } catch (error) {
+      this.setState({loading:false});
+
+    }
   };
 
 

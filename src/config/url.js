@@ -1,1 +1,1 @@
-export const flickrFeed = 'http://localhost:9000/graphql';
+export const API_URL = 'http://localhost:9000/graphql';
