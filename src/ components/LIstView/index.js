@@ -5,9 +5,8 @@ import './style.css';
 const ListView = (props) => {
   return (
     <div className="listview">
-      {props.products && props.products.map((picture, index) => (
-        <h1>Test</h1>
-        // <ListViewItem key={index} picture={picture} onAuthorSelected={props.onAuthorSelected} />
+      {props.products && props.products.map((product) => (
+        <ListViewItem key={product._id} product={product}  />
       ))}
     </div>
   );

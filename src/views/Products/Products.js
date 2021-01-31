@@ -45,7 +45,8 @@ class Products extends React.Component {
           _id
         }
       }`});
-      this.setState({products:response.data.Products, loading:false});
+      console.log('resp',response);
+      this.setState({products:response.data.data.Products, loading:false});
     } catch (error) {
       this.setState({loading:false});
 
@@ -66,6 +67,7 @@ class Products extends React.Component {
   };
 
   render() {
+    console.log('STATE', this.state.products);
     return (
       <div className="container">
         <div className="header">
