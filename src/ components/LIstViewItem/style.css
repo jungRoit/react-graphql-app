@@ -1,0 +1,48 @@
+
+.listview-item {
+  display: flex;
+  flex:1;
+  flex-direction: row;
+  padding: 10px 0 10px 0;
+  border-bottom: 1px solid #fddb3a;
+  width: 100%;
+}
+
+.listview-picture {
+  display: flex;
+  flex:1;
+  background-color: black;
+  height: 300px;
+  width: 300px;
+}
+
+.listview-details {
+  display: flex;
+  flex:3;
+  flex-direction: column;
+  padding: 10px 16px;
+}
+
+.detail-main {
+  display: flex;
+  flex:1;
+  flex-direction: column;
+}
+
+.detail-label {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+  padding-right: 8px;
+}
+
+.detail-content {
+  font-size: 20px;
+  color: #41444b;
+}
+
+.detail-description {
+  display: flex;
+  flex:1;
+  flex-direction: column;
+}

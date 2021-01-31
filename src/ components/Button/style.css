@@ -1,0 +1,20 @@
+.button {
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 12px;
+  min-width: 100px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.button:hover {
+  opacity: 0.7;
+}
+
+.button:focus {
+  outline:none;
+}
