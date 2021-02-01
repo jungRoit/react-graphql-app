@@ -30,7 +30,7 @@ class Products extends React.Component {
   filter = async (e) => {
     e.preventDefault();
     this.setState({offset:0}, () => {
-      this.filterProduct();
+      this.getProducts();
     });
   };
 
@@ -92,7 +92,7 @@ class Products extends React.Component {
     const offset = Math.ceil(this.state.limit * data.selected);
 
     this.setState({offset},()=>{
-      this.getProducts();
+      this.filterProduct();
     })
   }
 
