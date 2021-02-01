@@ -134,3 +134,8 @@ body {
   color:#fddb3a;
   padding-right: 8px;
 }
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}

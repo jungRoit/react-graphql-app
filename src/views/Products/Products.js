@@ -7,6 +7,7 @@ import { formatResponse } from '../../utils/utils';
 import Loader from 'react-loader-spinner';
 import ListView from '../../ components/LIstView';
 import Dropdown from '../../ components/Dropdown';
+import Pagination from '../../ components/Pagination';
 
 class Products extends React.Component {
   constructor(props) {
@@ -16,6 +17,9 @@ class Products extends React.Component {
       sortOrder: 'asc',
       sortBy: 'name',
       loading: false,
+      offset: 0,
+      limit: 5,
+      count: 0
     };
   }
 
@@ -25,27 +29,52 @@ class Products extends React.Component {
 
   filter = async (e) => {
     e.preventDefault();
-    this.getProducts();
+    this.setState({offset:0}, () => {
+      this.filterProduct();
+    });
   };
 
   getProducts = async () => {
     try {
       this.setState({loading:true});
       const response = await ApiService.post(API_URL,{query:`{
-        Products(offset:0,sortBy:"${this.state.sortBy}",order:"${this.state.sortOrder}") {
-          name
+        Products(offset:${this.state.offset},sortBy:"${this.state.sortBy}",order:"${this.state.sortOrder}") {
+          products {
+            name
           imageUrl
           price
           _id
+          }
+          count
         }
       }`});
       console.log('resp',response);
-      this.setState({products:response.data.data.Products, loading:false});
+      this.setState({products:response.data.data.Products.products, count: response.data.data.Products.count, loading:false});
     } catch (error) {
       this.setState({loading:false});
 
     }
   };
+
+  filterProduct = async () => {
+    try {
+    const response = await ApiService.post(API_URL,{query:`{
+      Products(offset:${this.state.offset},sortBy:"${this.state.sortBy}",order:"${this.state.sortOrder}") {
+        products {
+          name
+        imageUrl
+        price
+        _id
+        }
+        count
+      }
+    }`});
+    console.log('resp',response);
+    this.setState({products:response.data.data.Products.products, count: response.data.data.Products.count, loading:false});
+  } catch (error) {
+    this.setState({loading:false});
+  }
+  }
 
 
   handleSortOrder = (e) => {
@@ -57,6 +86,15 @@ class Products extends React.Component {
     this.setState({ sortBy: e.target.value }, () => {
     });
   };
+
+  handlePageChange = (data) => {
+    console.log('data', data);
+    const offset = Math.ceil(this.state.limit * data.selected);
+
+    this.setState({offset},()=>{
+      this.getProducts();
+    })
+  }
 
   render() {
     console.log('STATE', this.state.products);
@@ -106,6 +144,9 @@ class Products extends React.Component {
               <ListView
                 products={this.state.products}
               />
+              <div className="pagination-wrapper">
+              <Pagination total={this.state.count/this.state.limit} onChange={this.handlePageChange} />
+              </div>
             </div>
           )}
         </div>
